@@ -44,7 +44,7 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
     message: form.message.value
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbxohM4VzKunvNB7X5hRDM15birOe0Kfc4BUKd18OOJBfj86FRMLTuFFQ-TS_kmamDmO/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbwLkHrC7syIVeCDPmt1ypmsQ9oRzkHUaBsrvKHenWsLMsEvRrFMRXnA9h-fUZkMxGY6Jw/exec', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
