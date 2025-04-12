@@ -8,40 +8,58 @@ document.querySelectorAll('nav ul li a').forEach(anchor => {
     });
 });
 
-// Contact Form Submission to Google Sheets
-const contactForm = document.querySelector('#contact-form');
+/*
+// Timeline Navigation
+const timeline = document.querySelector('.timeline');
+const prevBtn = document.createElement('button');
+const nextBtn = document.createElement('button');
 
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
 
-    const data = {
-        timestamp: new Date().toLocaleString(),
-        name: contactForm.name.value,
-        email: contactForm.email.value,
-        subject: contactForm.subject.value,
-        message: contactForm.message.value
-    };
+prevBtn.classList.add('timeline-nav-btn', 'prev-btn');
+nextBtn.classList.add('timeline-nav-btn', 'next-btn');
 
-    fetch('https://script.google.com/macros/s/AKfycbx7t-sgXDz1XReOICRYOl-qoZhZMqQfN4Q9bD6VCGbNvgX0cyb31UFyRU51AYfB-3AF/exec', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Thank you for reaching out! I will get back to you soon.');
-            contactForm.reset();
-        } else {
-            alert('Oops! Something went wrong. Please try again.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Oops! Something went wrong. Please try again.');
-    });
+document.querySelector('#timeline').appendChild(prevBtn);
+document.querySelector('#timeline').appendChild(nextBtn);
+
+prevBtn.addEventListener('click', () => {
+    timeline.scrollBy({ left: -300, behavior: 'smooth' });
 });
+
+nextBtn.addEventListener('click', () => {
+    timeline.scrollBy({ left: 300, behavior: 'smooth' });
+});
+*/
+
+// Form Submission Handling
+document.getElementById('contact-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    subject: form.subject.value,
+    message: form.message.value
+  };
+
+  fetch('https://script.google.com/macros/s/AKfycbwchEwh1wlm2B4jX8hzsepqrGxiHv8-75GmPKqc8lVsl2rmV5aMbk-rS56saV1SjdmG/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(response => {
+    alert('Message sent successfully!');
+    form.reset();
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error submitting the form.');
+  });
+});
+
 
 // Fade-In Effect for Timeline Items
 const timelineItems = document.querySelectorAll('.timeline-item');
@@ -49,13 +67,13 @@ const timelineItems = document.querySelectorAll('.timeline-item');
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            entry.target.classList.add('visible'); // Add 'visible' class when item is in view
         }
     });
-}, { threshold: 0.5 });
+}, { threshold: 0.5 }); // Trigger when 50% of the item is visible
 
 timelineItems.forEach(item => {
-    observer.observe(item);
+    observer.observe(item); // Observe each timeline item
 });
 
 // Responsive Navigation Menu
